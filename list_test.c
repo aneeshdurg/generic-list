@@ -2,6 +2,13 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
+#define TEST(fn)\
+  if(!fn()) {\
+    puts(#fn" passed!");\
+  } else {\
+    puts(#fn" failed.");\
+  }
+
 
 #define TYPE int
 #include "list.h"
@@ -65,13 +72,6 @@ int int_test(){
   LIST_DESTROY(&my_list);
   return 0;
 }
-
-#define TEST(fn)\
-  if(!fn()) {\
-    puts(#fn" passed!");\
-  } else {\
-    puts(#fn" failed.");\
-  }
 
 int str_test(){
   void str_destroy(char *str){ free(str); }

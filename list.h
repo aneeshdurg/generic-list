@@ -3,7 +3,11 @@
  *
  * This file contains a generic type-safe linked list implementation generator
  * along with some linked list utitlites that don't depend on the type of the 
- * list.
+ * list. 
+ *
+ * To use, define the parameters described below, and include <stdlib.h> to
+ * define malloc which is used by the constructor. stdlib only needs to be 
+ * included in the file that defines the implementation (details below).
  *
  * PARAMETERS:
  *  TYPE
@@ -11,7 +15,7 @@
  *  _LIST_HEADER
  *  _LIST_IMPLEMENTATION
  *
- * To include this library you need to define the following macros:
+ * To compile this library you must define the following macros:
  *   TYPE
  *   TYPE_PTR (optional)
  * 
@@ -22,27 +26,41 @@
  * Note: you can create lists for multiple types by redefining TYPE and
  * re-including list.h
  *
- * The macros _LIST_HEADER and _LIST_IMPLEMENTATION are usefule for including
+ * The macros _LIST_HEADER and _LIST_IMPLEMENTATION are useful for including
  * this library in header files. Defining _LIST_HEADER before including will
  * only define everything except function bodies (creating only a prototype 
- * declaration). _LIST_IMPLEMENTATION will declare the functions implementation
- * but will not declare any structs thereby allowing the program to compile.
+ * declaration). _LIST_IMPLEMENTATION will declare the function implementations
+ * but will not declare struct definitions thereby allowing the program to
+ * compile.
  *
  * If included in a source file with no accompanying header file, these
  * parameters can be safely omitted.
  *
- * e.g. Creating an int type'd list:
+ * e.g. Creating and using an int type'd list:
  *
+ * ```
  * #include <stdio.h>
+ * #include <stlib.h>
+ *
  * #define TYPE int
  * #include "list.h"
  * #undef TYPE
  *
  * int main(){
+ *  // Create an empty linked list
  *  list_sentinal_int list = new_list_int(NULL, 0, NULL);
+ *  // Append 5 elements
+ *  for(int i = 0; i < 5; i++)
+ *    LIST_APPEND(&list, 0);
+ *  // print each element
+ *  LIST_FOR_EACH(&list, elem, {
+ *    printf("Current element is %d\n", elem->entry);
+ *  });
+ *  // Cleanup list
+ *  LIST_DESTROY(&list);
  *  return 0;
  * }
- *
+ * ```
  */
 
 // Check that type is defined
