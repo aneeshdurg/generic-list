@@ -2,11 +2,11 @@
  * @author: Aneesh Durg
  *
  * This file contains a generic type-safe linked list implementation generator
- * along with some linked list utitlites that don't depend on the type of the 
- * list. 
+ * along with some linked list utitlites that don't depend on the type of the
+ * list.
  *
  * To use, define the parameters described below, and include <stdlib.h> to
- * define malloc which is used by the constructor. stdlib only needs to be 
+ * define malloc which is used by the constructor. stdlib only needs to be
  * included in the file that defines the implementation (details below).
  *
  * PARAMETERS:
@@ -18,17 +18,17 @@
  * To compile this library you must define the following macros:
  *   TYPE
  *   TYPE_PTR (optional)
- * 
+ *
  * TYPE controls the type of the link list implementation to be generated
- * TYPE_PTR should be a name that TYPE can be safely typedef'd to to prevent 
+ * TYPE_PTR should be a name that TYPE can be safely typedef'd to to prevent
  *   invalid syntax in the case that TYPE contains a '*'
- * 
+ *
  * Note: you can create lists for multiple types by redefining TYPE and
  * re-including list.h
  *
  * The macros _LIST_HEADER and _LIST_IMPLEMENTATION are useful for including
  * this library in header files. Defining _LIST_HEADER before including will
- * only define everything except function bodies (creating only a prototype 
+ * only define everything except function bodies (creating only a prototype
  * declaration). _LIST_IMPLEMENTATION will declare the function implementations
  * but will not declare struct definitions thereby allowing the program to
  * compile.
@@ -161,8 +161,9 @@ EXPAND(LIST_SENTINALS, TYPE)
  * @return size_t length of new list
  *
  * @param list list_sentinal_type storing list metadata
- * @param elem element of the same type as the list to append (not of type list_type)
- * 
+ * @param elem element of the same type as the list to append (not of type
+ *list_type)
+ *
  * e.g.
  *
  * struct list_sentinal_int my_list = new_list_int(NULL, 0, NULL);
@@ -177,8 +178,9 @@ EXPAND(LIST_SENTINALS, TYPE)
  * @return size_t length of new list
  *
  * @param list pointer to list_sentinal_type storing list metadata
- * @param elem element of the same type as the list to prepend (not of type list_type)
- * 
+ * @param elem element of the same type as the list to prepend (not of type
+ * list_type)
+ *
  * e.g.
  *
  * struct list_sentinal_int my_list = new_list_int(NULL, 0, NULL);
@@ -205,7 +207,7 @@ EXPAND(LIST_SENTINALS, TYPE)
  * Removes an element from a list without deleteing it
  *
  * @return size_t new length of list
- * 
+ *
  * @param list pointer to list_sentinal_type storing list metadata
  * @param elem pointer to list_type of element to remove
  */
@@ -247,7 +249,7 @@ EXPAND(LIST_SENTINALS, TYPE)
 #define LIST_POPF(list) _LIST_POP(list, head)
 
 /**
- * List pop from back 
+ * List pop from back
  *
  * @return list_type element at tail of list
  *
@@ -285,7 +287,7 @@ EXPAND(LIST_SENTINALS, TYPE)
 /**
  * List reverse iterator
  *
- * Iterates from tail to head 
+ * Iterates from tail to head
  * Does not allows deletion of elemnts during iteration
  *
  * @param list pointer to list_sentinal type
@@ -388,4 +390,3 @@ EXPAND(LIST_CONSTRUCTOR, TYPE)
 // Remove internal macros
 #undef TYPEHACK_H
 #undef TYPEHACK
-
