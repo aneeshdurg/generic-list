@@ -9,7 +9,6 @@
     puts(#fn" failed.");\
   }
 
-
 #define TYPE int
 #include "list.h"
 #undef TYPE
@@ -19,6 +18,11 @@
 #include "list.h"
 #undef TYPE_PTR
 #undef TYPE
+
+#ifdef ERROR_TEST
+//won't compile
+#include "list.h" 
+#endif
 
 int definitions_test(){
   // This just needs to compile
