@@ -30,19 +30,20 @@ int definitions_test() {
   (void)l;
   struct list_int i;
   (void)i;
-  (void)new_list_int;
 
   struct list_sentinal__str ls;
   (void)ls;
   struct list__str is;
   (void)is;
-  (void)new_list__str;
   return 0;
 }
 
 int int_test() {
+
   int list[] = {1, 2, 3, 4};
-  struct list_sentinal_int my_list = new_list_int(list, 4, NULL);
+  struct list_sentinal_int my_list = new_list(int, NULL);
+  LIST_APPEND_ARRAY(&my_list, list, 4);
+
   assert(my_list.head->entry == 1);
   assert(my_list.tail->entry == 4);
   assert(LIST_APPEND(&my_list, 5) == 5);
@@ -82,7 +83,9 @@ int str_test() {
   char *c = strdup("3");
 
   char *clist[] = {a, b, c};
-  struct list_sentinal__str my_c_list = new_list__str(clist, 3, str_destroy);
+  struct list_sentinal__str my_c_list = new_list(_str, str_destroy);
+  LIST_APPEND_ARRAY(&my_c_list, clist, 3);
+
   LIST_APPEND(&my_c_list, strdup("4"));
   LIST_PREPEND(&my_c_list, strdup("0"));
 

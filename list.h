@@ -48,7 +48,7 @@
  *
  * int main(){
  *  // Create an empty linked list
- *  list_sentinal_int list = new_list_int(NULL, 0, NULL);
+ *  struct list_sentinal_int list = new_list(int, NULL);
  *  // Append 5 elements
  *  for(int i = 0; i < 5; i++)
  *    LIST_APPEND(&list, 0);
@@ -188,6 +188,40 @@ EXPAND(LIST_SENTINALS, TYPE)
  *
  */
 #define LIST_PREPEND(list, elem) _LIST_ADD(list, elem, head, tail, prev, next)
+
+/**
+ * Append an array to a list element by element.
+ *
+ * @return pointer to the list passed in
+ *
+ * @param list pointer list to append array to
+ * @param array elements to append to list
+ * @param len length of array
+ */
+#define LIST_APPEND_ARRAY(list, array, len)                                    \
+  ({                                                                           \
+    for (size_t __i = 0; __i < len; __i++) {                                   \
+      LIST_APPEND(list, array[__i]);                                           \
+    }                                                                          \
+    list;                                                                      \
+  })
+
+/**
+ * Prepend an array to a list element by element.
+ *
+ * @return pointer to the list passed in
+ *
+ * @param list pointer list to prepend array to
+ * @param array elements to prepend to list
+ * @param len length of array
+ */
+#define LIST_PREPEND_ARRAY(list, array, len)                                   \
+  ({                                                                           \
+    for (size_t __i = 0; __i < len; __i++) {                                   \
+      LIST_PREPEND(list, array[__i]);                                          \
+    }                                                                          \
+    list;                                                                      \
+  })
 
 /**
  * Deletes an element from the list
@@ -350,39 +384,24 @@ EXPAND(LIST_SENTINALS, TYPE)
 #define LIST_DESTROY(list)                                                     \
   LIST_FOR_EACH_SAFE(list, __list_internal_var, __list_internal_temp,          \
                      { LIST_DEL(list, __list_internal_var); });
+
+/**
+ * List constructor
+ *
+ * Since this only initializes and returns a element of list_sentinal_T,
+ * this is returned on the stack.
+ *
+ * @param T type of list to create
+ * @param d destructor for the list
+ */
+#define new_list(T, d)                                                         \
+  ({                                                                           \
+    struct list_sentinal_##T __new_list_data = {0};                            \
+    __new_list_data.destructor = d;                                            \
+    __new_list_data;                                                           \
+  })
 #endif
 
-#ifndef _LIST_HEADER
-/**
- * Constructor function
- *
- * @param initializer array to populate new list with
- * @param len length of initializer array
- *
- * if initializer is NULL, then the list will be empty
- */
-#define LIST_CONSTRUCTOR(T)                                                    \
-  struct list_sentinal_##T new_list_##T(T *initializer, size_t len,            \
-                                        list_destructor_##T d) {               \
-    struct list_sentinal_##T data;                                             \
-    data.head = NULL;                                                          \
-    data.tail = NULL;                                                          \
-    data.length = 0;                                                           \
-    data.destructor = d;                                                       \
-    if (!initializer)                                                          \
-      return data;                                                             \
-    for (size_t i = 0; i < len; i++)                                           \
-      LIST_APPEND(&data, initializer[i]);                                      \
-    return data;                                                               \
-  }
-#else
-// Only define header
-#define LIST_CONSTRUCTOR(T)                                                    \
-  struct list_sentinal_##T new_list_##T(T *initializer, size_t len,            \
-                                        list_destructor_##T d);
-#endif
-EXPAND(LIST_CONSTRUCTOR, TYPE)
-#undef LIST_CONSTRUCTOR
 // Cleaning up expansion macros
 #undef EXPAND
 #undef EXPAND1
